@@ -1,10 +1,6 @@
-.database-icon{
-	 background: url('../images/database.png') no-repeat;
-}
-
-#sqbTableTree .x-grid-tree-node-expanded .x-tree-icon-parent {
+#SQLTableListTree .x-grid-tree-node-expanded .x-tree-icon-parent {
     background: url('../images/database.png') no-repeat center center !important;
 }
-#sqbTableTree  .x-grid-row  .x-tree-icon-leaf {
+#SQLTableListTree  .x-grid-row  .x-tree-icon-leaf {
 	background-image:url('../images/database-table-icon.png');
 }

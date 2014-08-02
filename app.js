@@ -1,6 +1,6 @@
 Ext.tip.QuickTipManager.init();
 
-Ext.namespace("letyourneilsgrow.sqlbuilder");
+Ext.namespace("letyourneilsgrow.sqlquerybuilder");
 
 Ext.Loader.setConfig({
     enabled: true,
@@ -13,7 +13,7 @@ Ext.application({
     name: "sqb",
     autoCreateViewport: false,
     launch: function(){
-	var sqbPanel = Ext.create("Ext.letyourneilsgrow.screen.SQLQueryBuilderPanel",{
+	var sqbPanel = Ext.create("Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel",{
 		region: "center"
 	});    
 	Ext.create("Ext.container.Viewport", {
