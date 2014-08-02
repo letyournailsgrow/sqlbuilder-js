@@ -1,5 +1,17 @@
 Ext.define('Ext.letyourneilsgrow.screen.SQLQueryBuilderPanel', {
     extend: 'Ext.panel.Panel',
+    requires:[
+	"Ext.letyourneilsgrow.screen.SQLQueryBuilderTableTree",
+	"Ext.letyourneilsgrow.screen.SQLQueryBuilderTableWindow",
+	"Ext.letyourneilsgrow.screen.SQLQueryBuilderTableZonePanel",
+	"Ext.letyourneilsgrow.screen.SQLQueryBuilderResultPanel",
+	
+	"Ext.letyourneilsgrow.screen.SQLQueryBuilderTableFieldsGrid",
+	
+	//model
+	"Ext.letyourneilsgrow.model.SQLTableModel"
+    ],
+	
     layout: {
         type: 'border'
     },
@@ -17,14 +29,14 @@ Ext.define('Ext.letyourneilsgrow.screen.SQLQueryBuilderPanel', {
 		split: true,
 		items: [
 			{
-			    xtype: 'panel',
+			    xtype: 'sqbtabletree',
 			    html:'SELECT/DRAG TABLES ZONE',	
 			    border: false,
 			    region: 'west',
 			    width: 300,
 			    split: true
 			},{
-			    xtype: 'panel',
+			    xtype: 'sqbtablezonepanel',
 			    html:'TABLES SELECTED',	
 			    border: false,
 			    region: 'center',
@@ -40,7 +52,7 @@ Ext.define('Ext.letyourneilsgrow.screen.SQLQueryBuilderPanel', {
 			}]
 	},
 	{
-		xtype:'panel',
+		xtype:'sqbresultpanel',
 		border: false,
 		region: 'south',
 		autoScroll: true,

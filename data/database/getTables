@@ -1,0 +1,11 @@
+[{"allowDrop":false,"text":"carte","leaf":true},
+{"allowDrop":false,"text":"autor","leaf":true},
+{"allowDrop":false,"text":"film","leaf":true},
+{"allowDrop":false,"text":"actor","leaf":true},
+{"allowDrop":false,"text":"categorie","leaf":true},
+{"allowDrop":false,"text":"lista","leaf":true},
+{"allowDrop":false,"text":"editura","leaf":true},
+{"allowDrop":false,"text":"regizor","leaf":true},
+{"allowDrop":false,"text":"tara","leaf":true},
+{"allowDrop":false,"text":"oras","leaf":true},
+{"allowDrop":false,"text":"scenarist","leaf":true}]

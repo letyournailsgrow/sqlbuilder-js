@@ -1,0 +1,7 @@
+[
+{"field":"*","extra":"","id":"D942FE45-C68B-540B-EBD873CF98EDA05A","key":"","tableName":"carte","null":"","default":"","type":""},
+{"field":"id","extra":"","id":"D942FE46-D60D-0ADD-88909D4C8A26E62D","key":"PRI","tableName":"carte","null":false,"default":0,"type":"int(11)"},
+{"field":"nume","extra":"","id":"D942FE47-FA46-03D8-763AA868CB48627E","key":"","tableName":"carte","null":true,"default":"","type":"varchar(255)"},
+{"field":"prenume","extra":"","id":"D942FE48-9CF2-7F4B-1ACC9D21CE959F3D","key":"","tableName":"carte","null":true,"default":0,"type":"int(11)"},
+{"field":"varsta","extra":"","id":"D942FE49-AF1D-8723-206DFF7EF8F2E319","key":"","tableName":"carte","null":false,"default":1.00,"type":"decimal(19,2)"}
+]
