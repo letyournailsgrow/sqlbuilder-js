@@ -1,4 +1,4 @@
-Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderTableFieldsGrid', {
+Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindowGrid', {
     extend: 'Ext.grid.Panel',
     alias: ['widget.sqbtablefieldsgrid'],
     border: false,

@@ -1,4 +1,4 @@
-Ext.define('Ext.letyourneilsgrow.screen.SQLQueryBuilderTableWindow', {
+Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindow', {
     extend: 'Ext.window.Window',
     minWidth: 150,
     alias: ['widget.sqltablewindow'],
@@ -74,7 +74,7 @@ Ext.define('Ext.letyourneilsgrow.screen.SQLQueryBuilderTableWindow', {
             }
         });
         
-        tableModel = Ext.create("Ext.letyourneilsgrow.model.SQLTableModel", {
+        tableModel = Ext.create("Ext.letyourneilsgrow.sqlquerybuilder.model.SQLTableModel", {
             id: this.tableId,
             name: this.title,
             alias: ''

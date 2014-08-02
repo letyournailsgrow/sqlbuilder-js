@@ -2,11 +2,12 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel', {
     extend: 'Ext.panel.Panel',
     requires:[
 	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableListTree",
-	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderTableWindow",
+	
 	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderTableZonePanel",
 	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderResultPanel",
 	
-	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderTableFieldsGrid",
+	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindow",
+	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindowGrid",
 	
 	//model
 	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLTableModel"
