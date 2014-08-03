@@ -5,12 +5,15 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindow', {
  
     height: 200,
     width: 150,
-  
+  	    
     layout: {
         type: 'fit'
     },
-    closable: true,
     
+    closable: true,
+  
+    shadowSprite: {},		
+	    
     listeners: {
         show: function(){
             
@@ -19,9 +22,7 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindow', {
             
         }
     },
-    
-  
-    
+          
      initComponent: function(){
         
         // UUID

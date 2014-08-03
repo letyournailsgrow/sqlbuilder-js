@@ -16,10 +16,15 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel', {
 	//model
 	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLTableModel",
 	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel",
+	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLJoinModel",
 
 	//store
-	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLProjectionAndSelectionStore"
-		
+	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLTableStore",
+	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLProjectionAndSelectionStore",
+	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLJoinStore",
+	
+	//controller	
+	"Ext.letyourneilsgrow.sqlquerybuilder.controller.SQLQueryBuilderController"
     ],
 	
     layout: {
@@ -75,11 +80,8 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel', {
 	},
      ],
 	
-     initComponent: function(){
-	// must be move to another place (controller)      
-        this.projectionAndSelectionStore = Ext.create('Ext.letyourneilsgrow.sqlquerybuilder.store.SQLProjectionAndSelectionStore', {
-            storeId: 'SQLProjectionAndSelectionStore'
-        });
+     initComponent: function(){		
+	var sqlQueryBuilderController = Ext.create("Ext.letyourneilsgrow.sqlquerybuilder.controller.SQLQueryBuilderController");	 
 	
         this.callParent(arguments);
     }

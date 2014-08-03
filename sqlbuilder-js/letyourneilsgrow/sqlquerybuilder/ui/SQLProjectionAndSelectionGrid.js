@@ -12,6 +12,24 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLProjectionAndSelectionGri
 		})
     ],
 	
+    viewConfig: {
+        listeners: {
+            render: function(view){
+                this.dd = {};
+                this.dd.dropZone = new Ext.grid.ViewDropZone({
+                    view: view,
+                    ddGroup: 'SQLProjectionAndSelectionGridDDGroup',
+                    handleNodeDrop: function(data, record, position){
+                        
+                    }
+                });
+            },
+            drop: function(node, data, dropRec, dropPosition){
+		    
+            }
+        }
+    },
+    
     columns: [{
         xtype: 'actioncolumn',
 	menuDisabled: true,
