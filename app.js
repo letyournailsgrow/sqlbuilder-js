@@ -13,7 +13,7 @@ Ext.application({
     name: "sqb",
     autoCreateViewport: false,
     launch: function(){
-	var sqbPanel = Ext.create("Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel",{
+	var sqbPanel = Ext.create("Ext.letyourneilsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel",{
 		region: "center"
 	});    
 	Ext.create("Ext.container.Viewport", {
