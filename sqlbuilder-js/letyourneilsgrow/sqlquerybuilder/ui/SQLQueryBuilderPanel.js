@@ -6,11 +6,20 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel', {
 	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderTableZonePanel",
 	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderResultPanel",
 	
+	
+	
 	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindow",
 	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLTableWindowGrid",
 	
+	"Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLProjectionAndSelectionGrid",
+	
 	//model
-	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLTableModel"
+	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLTableModel",
+	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel",
+
+	//store
+	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLProjectionAndSelectionStore"
+		
     ],
 	
     layout: {
@@ -44,7 +53,8 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel', {
 			    split: true,
 			    layout: 'fit'
 			}, {
-		            xtype: 'panel',
+		            xtype: 'sqlprojectionandselectiongrid',
+			//	xtype:'panel',
 			    html:'PROJECTION & SELECTION',	
 			    border: false,
 			    region: 'south',
@@ -66,6 +76,11 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.ui.SQLQueryBuilderPanel', {
      ],
 	
      initComponent: function(){
+	// must be move to another place (controller)      
+        this.projectionAndSelectionStore = Ext.create('Ext.letyourneilsgrow.sqlquerybuilder.store.SQLProjectionAndSelectionStore', {
+            storeId: 'SQLProjectionAndSelectionStore'
+        });
+	
         this.callParent(arguments);
     }
 });
