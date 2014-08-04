@@ -55,6 +55,10 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
     
     onSQLProjectionAndSelectionRemove: function(fieldStore){
          alert("handleSQLFieldRemove");
-    }
+    },
+    
+    addTable: function(table){
+        this.tableStore.add(table);
+    },
     
 });

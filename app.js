@@ -10,7 +10,7 @@ Ext.Loader.setConfig({
 });
 
 Ext.application({
-    name: "sqb",
+  //  name: "sqb",
     autoCreateViewport: false,
     launch: function(){
 	var sqbPanel = Ext.create("Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel",{

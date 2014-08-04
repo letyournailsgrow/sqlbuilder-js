@@ -10,6 +10,8 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
 	
 	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLProjectionAndSelectionGrid",
 	
+	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableSprite",
+	
 	//model
 	"Ext.letyournailsgrow.sqlquerybuilder.model.SQLTableModel",
 	"Ext.letyournailsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel",
@@ -28,6 +30,8 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
         type: 'border'
     },
     title: 'SQL Query Builder',
+    
+    id:"SQLQueryBuilderPanel",
     
      items:[
 	{
@@ -77,8 +81,12 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
      ],
 	
      initComponent: function(){		
-	var sqlQueryBuilderController = Ext.create("Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderController");	 
-	
+	this.sqlQueryBuilderController = Ext.create("Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderController");	 
         this.callParent(arguments);
+    },
+    
+    getController:function(){
+	return this.sqlQueryBuilderController;
     }
+    
 });
