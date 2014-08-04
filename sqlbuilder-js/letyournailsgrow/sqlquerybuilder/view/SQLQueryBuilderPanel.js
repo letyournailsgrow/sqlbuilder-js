@@ -4,7 +4,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
 	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableListTree",
 	
 	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderTableZonePanel",
-letyournailsgrow	
+	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderResultPanel",
 	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow",
 	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid",
 	
@@ -56,7 +56,6 @@ letyournailsgrow
 			    layout: 'fit'
 			}, {
 		            xtype: 'sqlprojectionandselectiongrid',
-			//	xtype:'panel',
 			    html:'PROJECTION & SELECTION',	
 			    border: false,
 			    region: 'south',
