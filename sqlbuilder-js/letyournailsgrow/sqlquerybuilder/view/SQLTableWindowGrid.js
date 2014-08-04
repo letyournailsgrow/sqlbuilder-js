@@ -1,4 +1,4 @@
-Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
+Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
     extend: 'Ext.grid.Panel',
     alias: ['widget.sqbtablefieldsgrid'],
     border: false,
@@ -93,7 +93,7 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 					joinCondition = joinCondition + targetTable.get('tableName') + '.' + join.get('rightTableField');
 				}
 				
-				var join = Ext.create('Ext.letyourneilsgrow.sqlquerybuilder.model.SQLJoinModel');			
+				var join = Ext.create('Ext.letyournailsgrow.sqlquerybuilder.model.SQLJoinModel');			
 				join.set('id', connection.uuid);			
 				join.set('leftTableId', sqlTable1.tableId);			
 				join.set('leftTableField', data.records[0].get('field'));			

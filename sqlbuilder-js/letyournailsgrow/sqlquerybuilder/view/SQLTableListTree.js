@@ -1,4 +1,4 @@
-Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.view.SQLTableListTree', {
+Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableListTree', {
     extend: 'Ext.tree.Panel',
     alias: ['widget.sqltablelisttree'],
     id: 'SQLTableListTree',

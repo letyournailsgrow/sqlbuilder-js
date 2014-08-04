@@ -1,28 +1,27 @@
-Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
+Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
     extend: 'Ext.panel.Panel',
     requires:[
-	"Ext.letyourneilsgrow.sqlquerybuilder.view.SQLTableListTree",
+	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableListTree",
 	
-	"Ext.letyourneilsgrow.sqlquerybuilder.view.SQLQueryBuilderTableZonePanel",
-	"Ext.letyourneilsgrow.sqlquerybuilder.view.SQLQueryBuilderResultPanel",
+	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderTableZonePanel",
+letyournailsgrow	
+	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow",
+	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid",
 	
-	"Ext.letyourneilsgrow.sqlquerybuilder.view.SQLTableWindow",
-	"Ext.letyourneilsgrow.sqlquerybuilder.view.SQLTableWindowGrid",
-	
-	"Ext.letyourneilsgrow.sqlquerybuilder.view.SQLProjectionAndSelectionGrid",
+	"Ext.letyournailsgrow.sqlquerybuilder.view.SQLProjectionAndSelectionGrid",
 	
 	//model
-	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLTableModel",
-	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel",
-	"Ext.letyourneilsgrow.sqlquerybuilder.model.SQLJoinModel",
+	"Ext.letyournailsgrow.sqlquerybuilder.model.SQLTableModel",
+	"Ext.letyournailsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel",
+	"Ext.letyournailsgrow.sqlquerybuilder.model.SQLJoinModel",
 
 	//store
-	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLTableStore",
-	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLProjectionAndSelectionStore",
-	"Ext.letyourneilsgrow.sqlquerybuilder.store.SQLJoinStore",
+	"Ext.letyournailsgrow.sqlquerybuilder.store.SQLTableStore",
+	"Ext.letyournailsgrow.sqlquerybuilder.store.SQLProjectionAndSelectionStore",
+	"Ext.letyournailsgrow.sqlquerybuilder.store.SQLJoinStore",
 	
 	//controller	
-	"Ext.letyourneilsgrow.sqlquerybuilder.controller.SQLQueryBuilderController"
+	"Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderController"
     ],
 	
     layout: {
@@ -79,7 +78,7 @@ Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
      ],
 	
      initComponent: function(){		
-	var sqlQueryBuilderController = Ext.create("Ext.letyourneilsgrow.sqlquerybuilder.controller.SQLQueryBuilderController");	 
+	var sqlQueryBuilderController = Ext.create("Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderController");	 
 	
         this.callParent(arguments);
     }

@@ -1,4 +1,4 @@
-Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.view.SQLQueryBuilderTableZonePanel', {
+Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderTableZonePanel', {
     extend: 'Ext.panel.Panel',
     alias: ['widget.sqbtablezonepanel'],
     id: 'SQLTableZonePanel',

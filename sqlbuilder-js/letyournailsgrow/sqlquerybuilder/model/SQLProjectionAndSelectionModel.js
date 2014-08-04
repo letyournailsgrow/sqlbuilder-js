@@ -1,4 +1,4 @@
-Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel', {
+Ext.define('Ext.letyournailsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel', {
     extend: 'Ext.data.Model',
     fields: [{
         name: 'id',

@@ -1,4 +1,4 @@
-Ext.define('Ext.letyourneilsgrow.sqlquerybuilder.view.SQLQueryBuilderResultPanel', {
+Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderResultPanel', {
     extend: 'Ext.panel.Panel',
     alias: ['widget.sqbresultpanel'],
     id: 'SQLResultPanel',
