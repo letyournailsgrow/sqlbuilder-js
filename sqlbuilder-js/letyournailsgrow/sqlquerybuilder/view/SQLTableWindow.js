@@ -26,6 +26,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
      initComponent: function(){
         
 	var me = this;
+	this.isMouseDown = false; // util pentru spiridus
 	     
         // UUID
         this.tableId = this.createUUID();
@@ -110,15 +111,12 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
         return uuid;
     },
     
-    initSQLTable: function(){
-        // se creaza un spiridus?:) care ia forma window-ului
-        var sqlTablePanel = Ext.getCmp('SQLTableZonePanel');
-        var xyParentPos = sqlTablePanel.el.getXY();
+    // se creeaza un spiridus cu aceleasi dimensiuni ca fereastra
+    getSprite:function(tableZone){
+        var xyParentPos = tableZone.el.getXY();
         var xyChildPos = this.el.getXY();
         var childSize = this.el.getSize();
         
-        // create a sprite of type rectangle and set its position and size 
-        // to position and size of the the sqltable 
         var sprite = Ext.create('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableSprite', {
             type: 'rect',
             stroke: '#fff',
@@ -129,11 +127,20 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
             y: xyChildPos[1] - xyParentPos[1] + 2,
             scrollTop: 0
         });
+	return sprite;
+	
+    },
+    
+    initSQLTable: function(){
+       
+	var tableZone = Ext.getCmp('SQLTableZonePanel');   
+	// SPIRIDUS    
+        var sprite = this.getSprite(tableZone);
         
-	// se adauga sprite pe suprafata zonei de tabele
-        this.shadowSprite = sqlTablePanel.down('draw').surface.add(sprite).show(true);
+	// SPIRIDUS: se adauga sprite/spiridus pe suprafata zonei de tabele
+        this.shadowSprite = tableZone.down('draw').surface.add(sprite).show(true);
         
-        //daca tabelul se redimensioneaza...se redimensioneaza si spiridusul
+        // SPIRIDUS: daca tabelul se redimensioneaza...se redimensioneaza si spiridusul
         this.resizer.on('resize', function(resizer, width, height, event){
             this.shadowSprite.setAttributes({
                 width: width - 6,
@@ -146,41 +153,55 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
            // }
         }, this);
 	
+        // SPIRIDUS: cand se face click cu ajutorul mouse-ului pe header-ul ferestrei se poate considera ca se poate trage si spiridusul
+        this.getHeader().el.on('mousedown', this.startDragSprite, this);
+	
         /*
-        // register a function for the mousedown event on the previously added sqltable and bind to this scope
-        this.getHeader().el.on('mousedown', this.regStartDrag, this);
-        
         this.getHeader().el.on('contextmenu', this.showSQLTableCM, this);
-        
         this.getHeader().el.on('dblclick', this.showTableAliasEditForm, this);
-        
         this.getHeader().origValue = '';
-        
-        // register method this.moveWindow for the mousemove event on the document and bind to this scope
-        Ext.EventManager.on(document, 'mousemove', this.moveWindow, this);
-        
-        // register a function for the mouseup event on the document and add the this scope
-        Ext.EventManager.on(document, 'mouseup', function(){
-            // save the mousedown state
-            this.bMouseDown = false;
-        }, this);
         */
-    },
-    /*
-     moveWindow: function(event, domEl, opt){
        
-        if (this.bMouseDown) {
-            // get relative x and y values (offset)
-            var relPosMovement = this.getOffset('point');
-            // move the sprite to the position of the window
-            this.shadowSprite.onDrag(relPosMovement);
-            // check if the sprite has any connections
+	// SPIRIDUS: util pentru a muta spiridusul
+	Ext.EventManager.on(document, 'mousemove', this.moveWindow, this);
+        
+        // SPIRIDUS: util pentru a marca mutarea ferestrei (pentru spiridus)
+        Ext.EventManager.on(document, 'mouseup', function(){
+            this.isMouseDown = false;
+        }, this);
+        
+    },
+    
+     // SPIRIDUS
+     moveWindow: function(event, domEl, opt){
+        if (this.isMouseDown) {
+            // se trimite spiridusului cat s-a mutat (distanta) 
+            this.shadowSprite.onDrag(this.getOffset());
+          
+		/*
             if (this.shadowSprite.bConnections) {
                 // also move the associated connections 
                 for (var i = ux.vqbuilder.connections.length; i--;) {
                     this.connection(ux.vqbuilder.connections[i]);
                 }
-            }
+            }*/
         }
-    },*/
+    },
+    
+     // SPIRIDUS
+     startDragSprite: function(){
+        // save the mousedown state
+        this.isMouseDown = true;
+        // start the drag of the sprite
+        this.shadowSprite.startDrag(this.getId());
+    },
+    
+    // SPIRIDUS
+     getOffset: function(){
+        var xy = this.dd.getXY('point');
+	var s = this.dd.startXY;
+   
+        return [xy[0] - s[0], 
+		   xy[1] - s[1]];
+    },
 });
