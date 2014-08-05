@@ -62,18 +62,21 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 		drop: function(node, data, dropRec, dropPosition){			     			   
 			
 			  if (node.boundView) {
-				  /*
+				 
+				var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
+				  
 				var sqlTable1 = data.view.up('window');
 				var sqlTable2 = Ext.getCmp(node.boundView).up('window');
 				  
-				sqlTable1.shadowSprite.bConnections = true;				
-				sqlTable2.shadowSprite.bConnections = true;
-
-				//var dropTable = getTableById(sqlTable1.tableId);
-				//var targetTable = getTableById(sqlTable2.tableId);
+				sqlTable1.shadowSprite.isJoins = true;				
+				sqlTable2.shadowSprite.isJoins = true;
+				  
+				var dropTable = controller.getTableById(sqlTable1.tableId);
+				var targetTable = controller.getTableById(sqlTable2.tableId);
 				
 				var connection = sqlTable2.connection(sqlTable1.shadowSprite, sqlTable2.shadowSprite, "#000", [data.item.viewIndex, node.viewIndex]);
-
+				  
+				/*
 				sqlTable1.connectionUUIDs.push(connection.uuid);
 				sqlTable2.connectionUUIDs.push(connection.uuid);
 								
@@ -103,6 +106,19 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 				join.set('joinCondition', joinCondition);
 				*/
 			}
+		},
+		
+		bodyscroll: function(){
+			// SPIRIDUS: cand se face scrool, se face scrool si la spiridus
+			var scrollOffset = this.el.getScroll();
+			var sqlTable = this.up('sqltablewindow');
+			sqlTable.shadowSprite.scrollTop = scrollOffset.top;
+			
+			/*
+			// redraw all connections to reflect scroll action
+			for (var i = ux.vqbuilder.connections.length; i--;) {
+			    sqlTable.connection(ux.vqbuilder.connections[i]);
+			}*/
 		}
             
 	}

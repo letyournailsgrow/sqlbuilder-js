@@ -61,4 +61,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
         this.tableStore.add(table);
     },
     
+    getTableById: function(tableID){
+        return this.tableStore.getById(tableID);
+    }
 });
