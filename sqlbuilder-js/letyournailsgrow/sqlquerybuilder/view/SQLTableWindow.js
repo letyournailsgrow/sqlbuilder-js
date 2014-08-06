@@ -267,17 +267,20 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
         var bb2 = sprite2.getBBox();
         bb2.pY = bb2.y + headerHeight + ((indexes[1] - 1) * columHeight) + (columHeight / 2) - sprite2.scrollTop;
         
-	var points = [];
-        this.pushPoints(points,bb1); 
-	this.pushPoints(points,bb2); 
+	var points = []; // va contine 4 coordonate (primele 2 pentru bb1, ultimele 2 pentru bb2)
+        this.pushPoints(points,bb1);  // se adauga coodonatele pe ambele parti pentru bb1
+	this.pushPoints(points,bb2);  // se adauga coodonatele pe ambele parti pentru bb2
 	    
+	// se unesc cele mai apropiate puncte, dar numari in cruce, 
+	// PARE DUBIOS , se testeaza doar (0,3) si (1,2) pe x, nu si (0.2) si (1,3)   
         var leftBoxConnectionPoint;
         var rightBoxConnectionPoint;       
         for (var i = 0; i < 2; i++) {
             for (var j = 2; j < 4; j++) {
 	       var dx = Math.abs(points[i].x - points[j].x);
-	       var dy = Math.abs(points[i].y - points[j].y);
-                if (((i == 0 && j == 3) && dx < Math.abs(points[1].x - points[2].x)) || ((i == 1 && j == 2) && dx < Math.abs(points[0].x - points[3].x))) {
+	     //  var dy = Math.abs(points[i].y - points[j].y);
+                if ( ((i == 0 && j == 3) && dx < Math.abs(points[1].x - points[2].x))  || 
+		     ((i == 1 && j == 2) && dx < Math.abs(points[0].x - points[3].x))) {
                     leftBoxConnectionPoint = points[i];
                     rightBoxConnectionPoint = points[j];
                 }
