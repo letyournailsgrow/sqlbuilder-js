@@ -65,16 +65,19 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 				 
 				var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
 				  
-				var sqlTable1 = data.view.up('window');
-				var sqlTable2 = Ext.getCmp(node.boundView).up('window');
+				var sqlTableWindow1 = data.view.up('window');
+				var sqlTableWindow2 = Ext.getCmp(node.boundView).up('window');
 				  
-				sqlTable1.shadowSprite.isJoins = true;				
-				sqlTable2.shadowSprite.isJoins = true;
+				sqlTableWindow1.shadowSprite.isJoins = true;				
+				sqlTableWindow2.shadowSprite.isJoins = true;
 				  
-				var dropTable = controller.getTableById(sqlTable1.tableId);
-				var targetTable = controller.getTableById(sqlTable2.tableId);
+				var dropTable = controller.getTableById(sqlTableWindow1.tableId);
+				var targetTable = controller.getTableById(sqlTableWindow2.tableId);
+				  
+				var index1 = data.item.viewIndex;
+				var index2 = data.item.viewIndex;
 				
-				var connection = sqlTable2.connection(sqlTable1.shadowSprite, sqlTable2.shadowSprite, "#000", [data.item.viewIndex, node.viewIndex]);
+				var connection = sqlTableWindow2.joinTable(sqlTableWindow1.shadowSprite, sqlTableWindow2.shadowSprite, "#000", [index1, index2]);
 				  
 				/*
 				sqlTable1.connectionUUIDs.push(connection.uuid);

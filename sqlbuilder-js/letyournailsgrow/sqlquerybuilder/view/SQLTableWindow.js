@@ -217,92 +217,66 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
 		   xy[1] - s[1]];
     },
     
-    /*
-    getLeftRightCoordinates: function(obj1, obj2, aBBPos){
-        var bb1, bb2, p = [], dx, leftBoxConnectionPoint, rightBoxConnectionPoint, dis, columHeight = 21, headerHeight = 46, LeftRightCoordinates = {};
-        
-        bb1 = obj1.getBBox();
-       
-        bb1.pY = bb1.y + headerHeight + ((aBBPos[0] - 1) * columHeight) + (columHeight / 2) - obj1.scrollTop;
-        
-        bb2 = obj2.getBBox();
-       
-        bb2.pY = bb2.y + headerHeight + ((aBBPos[1] - 1) * columHeight) + (columHeight / 2) - obj2.scrollTop;
-        
-        
-        if (bb1.pY > (bb1.y + 4) && bb1.pY < (bb1.y + bb1.height - 4)) {
+    pushPoints:function(p,bb){
+	if (bb.pY > (bb.y + 4) && bb.pY < (bb.y + bb.height - 4)) {
             p.push({
-                x: bb1.x - 1, 
-                y: bb1.pY
+                x: bb.x - 1, 
+                y: bb.pY
             });
             p.push({
-                x: bb1.x + bb1.width + 1, 
-                y: bb1.pY
+                x: bb.x + bb.width + 1, 
+                y: bb.pY
             });
         }
         else {
-            if (bb1.pY < (bb1.y + 4)) {
+            if (bb.pY < (bb.y + 4)) {
                 p.push({
-                    x: bb1.x - 1,
-                    y: bb1.y + 4
+                    x: bb.x - 1,
+                    y: bb.y + 4
                 });
                 p.push({
-                    x: bb1.x + bb1.width + 1, 
-                    y: bb1.y + 4
+                    x: bb.x + bb.width + 1, 
+                    y: bb.y + 4
                 });
             }
             else {
                 p.push({
-                    x: bb1.x - 1, 
-                    y: bb1.y + bb1.height - 4
+                    x: bb.x - 1, 
+                    y: bb.y + bb.height - 4
                 });
                 p.push({
-                    x: bb1.x + bb1.width + 1, 
-                    y: bb1.y + bb1.height - 4
+                    x: bb.x + bb.width + 1, 
+                    y: bb.y + bb.height - 4
                 });
             };
 	};
-
-        if (bb2.pY > (bb2.y + 4) && bb2.pY < (bb2.y + bb2.height - 4)) {
-            p.push({
-                x: bb2.x - 1,
-                y: bb2.pY
-            });
-            p.push({
-                x: bb2.x + bb2.width + 1, 
-                y: bb2.pY
-            });
-        }
-        else {
-            if (bb2.pY < (bb2.y + 4)) {
-                p.push({
-                    x: bb2.x - 1, 
-                    y: bb2.y + 4
-                });
-                p.push({
-                    x: bb2.x + bb2.width + 1, 
-                    y: bb2.y + 4
-                });
-            }
-            else {
-                p.push({
-                    x: bb2.x - 1,
-                    y: bb2.y + bb2.height - 4
-                });
-                
-                p.push({
-                    x: bb2.x + bb2.width + 1, 
-                    y: bb2.y + bb2.height - 4
-                });
-            }
-        };
+    },
+    
+    getLeftRightCoordinates: function(sprite1, sprite2, indexes){
+	    
+	var columHeight = 21;
+	var headerHeight = 46;
+	   
+	// calculeaza pe baza index-ului pozitia efectiva pe sprite (pe unde s-ar afla)
+        var bb1 = sprite1.getBBox();
+        bb1.pY = bb1.y + headerHeight + ((indexes[0] - 1) * columHeight) + (columHeight / 2) - sprite1.scrollTop;
         
+        var bb2 = sprite2.getBBox();
+        bb2.pY = bb2.y + headerHeight + ((indexes[1] - 1) * columHeight) + (columHeight / 2) - sprite2.scrollTop;
+        
+	var points = [];
+        this.pushPoints(points,bb1); 
+	this.pushPoints(points,bb2); 
+	    
+        var leftBoxConnectionPoint;
+        var rightBoxConnectionPoint;       
         for (var i = 0; i < 2; i++) {
             for (var j = 2; j < 4; j++) {
-                dx = Math.abs(p[i].x - p[j].x), dy = Math.abs(p[i].y - p[j].y);
-                if (((i == 0 && j == 3) && dx < Math.abs(p[1].x - p[2].x)) || ((i == 1 && j == 2) && dx < Math.abs(p[0].x - p[3].x))) {
-                    leftBoxConnectionPoint = p[i];
-                    rightBoxConnectionPoint = p[j];
+	       var dx = Math.abs(points[i].x - points[j].x);
+	       var dy = Math.abs(points[i].y - points[j].y);
+                if (((i == 0 && j == 3) && dx < Math.abs(points[1].x - points[2].x)) || ((i == 1 && j == 2) && dx < Math.abs(points[0].x - points[3].x))) {
+                    leftBoxConnectionPoint = points[i];
+                    rightBoxConnectionPoint = points[j];
                 }
             }
         };
@@ -313,63 +287,72 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
         };
         
     },
-    */
-    connection: function(obj1, obj2, line, aBBPos){
-	    /*
-        var LeftRightCoordinates, line1, line2, miniLine1, miniLine2, path, surface, color = typeof line == "string" ? line : "#000";
-        
-        if (obj1.line && obj1.from && obj1.to && obj1.aBBPos) {
-            line = obj1;
-            obj1 = line.from;
-            obj2 = line.to;
-            aBBPos = line.aBBPos;
-        }
-        
-        // set reference to the wright surface
-        surface = obj1.surface;
-        
-        // get coordinates for the left and right box
-        LeftRightCoordinates = this.getLeftRightCoordinates(obj1, obj2, aBBPos);
-        
-        // check if the LeftBox is still on the left side or not
-        if (LeftRightCoordinates.leftBoxConnectionPoint.x - LeftRightCoordinates.rightBoxConnectionPoint.x < 0) {
-            line1 = 12;
-            line2 = 12;
-        }
-        else {
-            line1 = -12;
-            line2 = -12;
-        }
-        // define the path between the left and the right box
-        path = ["M", LeftRightCoordinates.leftBoxConnectionPoint.x, LeftRightCoordinates.leftBoxConnectionPoint.y, "H", LeftRightCoordinates.leftBoxConnectionPoint.x + line1, "L", LeftRightCoordinates.rightBoxConnectionPoint.x - line2, LeftRightCoordinates.rightBoxConnectionPoint.y, "H", LeftRightCoordinates.rightBoxConnectionPoint.x].join(",");
-        
-        miniLine1 = ["M", LeftRightCoordinates.leftBoxConnectionPoint.x, LeftRightCoordinates.leftBoxConnectionPoint.y, "H", LeftRightCoordinates.leftBoxConnectionPoint.x + line1].join(",");
-        
-        miniLine2 = ["M", LeftRightCoordinates.rightBoxConnectionPoint.x - line2, LeftRightCoordinates.rightBoxConnectionPoint.y, "H", LeftRightCoordinates.rightBoxConnectionPoint.x].join(",");
-        
-        //check if it is a new connection or not
-        if (line && line.line) {
-            // old connection, only change path
-            line.bgLine &&
-            line.bgLine.setAttributes({
-                path: path
+    
+    
+    getJoinTablePaths:function(sprite1, sprite2, indexes){
+	var positions = this.getLeftRightCoordinates(sprite1, sprite2, indexes);
+	var line1, line2;
+	if (positions.leftBoxConnectionPoint.x - positions.rightBoxConnectionPoint.x < 0) {
+	    line1 = 12;
+	    line2 = 12;
+	} else {
+	    line1 = -12;
+	    line2 = -12;
+	}  
+	// M = move to (x,y)+
+	// H = horizontal line to x+
+	// L = line to (x,y)+
+	var path = ["M", positions.leftBoxConnectionPoint.x, positions.leftBoxConnectionPoint.y, 
+			 "H", positions.leftBoxConnectionPoint.x + line1, 
+			 "L", positions.rightBoxConnectionPoint.x - line2, positions.rightBoxConnectionPoint.y,
+			 "H", positions.rightBoxConnectionPoint.x
+			].join(",");
+
+	var miniLine1 = ["M", positions.leftBoxConnectionPoint.x, positions.leftBoxConnectionPoint.y,
+			       "H", positions.leftBoxConnectionPoint.x + line1
+			      ].join(",");
+
+	var miniLine2 = ["M", positions.rightBoxConnectionPoint.x - line2, positions.rightBoxConnectionPoint.y, 
+			       "H", positions.rightBoxConnectionPoint.x
+			      ].join(",");
+	
+	return [path,miniLine1,miniLine2];
+	
+    },
+    
+    updateJoinTable:function(joinTable){
+	var sprite1 = joinTable.from; 
+	var sprite2 = joinTable.to;   
+	var indexes = joinTable.indexes; 
+	    
+	var joinTablePath = this.getJoinTablePaths(sprite1,sprite2,indexes);
+	
+	if (joinTable.bgLine){
+	     joinTable.bgLine.setAttributes({
+                path: joinTablePath[0]
             }, true);
-            line.line.setAttributes({
-                path: path
-            }, true);
-            line.miniLine1.setAttributes({
-                path: miniLine1
-            }, true);
-            line.miniLine2.setAttributes({
-                path: miniLine2
-            }, true);
-        }
-        else {
-            // new connction, return new connection object
-            return {
+	}
+	joinTable.line.setAttributes({
+		path: joinTablePath[0]
+	}, true);
+	joinTable.miniLine1.setAttributes({
+		path: joinTablePath[1]
+	}, true);
+	joinTable.miniLine2.setAttributes({
+		path: joinTablePath[2]
+	}, true);
+	
+    },
+    
+    joinTable:function(sprite1, sprite2, color, indexes){
+	var surface = sprite1.surface;
+	    
+	var joinTablePath = this.getJoinTablePaths(sprite1,sprite2,indexes);
+	
+	return {
                 line: Ext.create('Ext.draw.Sprite', {
                     type: 'path',
-                    path: path,
+                    path: joinTablePath[0],
                     stroke: color,
                     fill: 'none',
                     'stroke-width': 1,
@@ -377,7 +360,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 }).show(true),
                 miniLine1: Ext.create('Ext.draw.Sprite', {
                     type: 'path',
-                    path: miniLine1,
+                    path: joinTablePath[1],
                     stroke: color,
                     fill: 'none',
                     'stroke-width': 2,
@@ -385,7 +368,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 }).show(true),
                 miniLine2: Ext.create('Ext.draw.Sprite', {
                     type: 'path',
-                    path: miniLine2,
+                    path: joinTablePath[2],
                     stroke: color,
                     fill: 'none',
                     'stroke-width': 2,
@@ -393,18 +376,18 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 }).show(true),
                 bgLine: Ext.create('Ext.draw.Sprite', {
                     type: 'path',
-                    path: path,
+                    path: joinTablePath[0],
                     opacity: 0,
                     stroke: '#fff',
                     fill: 'none',
                     'stroke-width': 10,
                     surface: surface
                 }).show(true),
-                from: obj1,
-                to: obj2,
-                aBBPos: aBBPos,
+                from: sprite1,
+                to: sprite2,
+                indexes: indexes,
                 uuid: this.createUUID()
-            };
-        }*/
-    },
+	};
+    }
+   
 });
