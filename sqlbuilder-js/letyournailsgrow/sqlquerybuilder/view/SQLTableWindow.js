@@ -218,7 +218,8 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
     },
     
     pushPoints:function(p,bb){
-	if (bb.pY > (bb.y + 4) && bb.pY < (bb.y + bb.height - 4)) {
+	if (bb.pY > (bb.y + 4) && bb.pY < (bb.y + bb.height - 4)) { // daca [y  < py < y+h] daca este "oarecum"  (mai departe de 4 pixeli distanta de marinile de sus si jos)  in interiorul spridusului
+	    // (x.pY) & (x+w,pY) : deci 2 puncte, unul pe o latura si altul pe cealalta latura , unde s-ar afla putea afla pozitia de inceput a liniii care ureste cele doua tabele	
             p.push({
                 x: bb.x - 1, 
                 y: bb.pY
@@ -229,7 +230,8 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
             });
         }
         else {
-            if (bb.pY < (bb.y + 4)) {
+            if (bb.pY < (bb.y + 4)) { // daca punctul ar fii "oarecum" (la maxim 4 pixeli distanta) pe marinea de sus
+		//(x,y) & (x+w,y) : cele doua puncte  de sus ale spiridului    
                 p.push({
                     x: bb.x - 1,
                     y: bb.y + 4
@@ -239,7 +241,8 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                     y: bb.y + 4
                 });
             }
-            else {
+            else { // daca punctul ar fii "oarecum" (la maxim 4 pixeli distanta) pe marinea de jos
+		//(x,y+h) & (x+w,y+h) : : cele doua puncte  de jos ale spiridului   
                 p.push({
                     x: bb.x - 1, 
                     y: bb.y + bb.height - 4
