@@ -19,6 +19,8 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
 	this.joinStore = Ext.create('Ext.letyournailsgrow.sqlquerybuilder.store.SQLJoinStore', {
             storeId: 'SQLJoinStore'
         });
+	
+	this.connections = [];
         	        
         this.tableStore.on('update', this.onSQLTableUpdate, this);
         this.tableStore.on('add', this.onSQLTableAdd, this);
@@ -63,5 +65,17 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
     
     getTableById: function(tableID){
         return this.tableStore.getById(tableID);
-    }
+    },
+    
+    addJoin: function(join){
+	this.joinStore.add(join) ;
+    },
+    
+    addConnection:function(connection){
+	this.connections.push();
+    },
+    
+    getConnections:function(){
+	return this.connections;
+    },
 });

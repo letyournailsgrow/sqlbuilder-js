@@ -67,9 +67,9 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 				  
 				var sqlTableWindow1 = data.view.up('window');
 				var sqlTableWindow2 = Ext.getCmp(node.boundView).up('window');
-				  
-				sqlTableWindow1.shadowSprite.isJoins = true;				
-				sqlTableWindow2.shadowSprite.isJoins = true;
+				   
+			        sqlTableWindow1.shadowSprite.hasJoins = true;				
+				sqlTableWindow2.shadowSprite.hasJoins = true;
 				  
 				var dropTable = controller.getTableById(sqlTableWindow1.tableId);
 				var targetTable = controller.getTableById(sqlTableWindow2.tableId);
@@ -78,15 +78,17 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 				var index2 = data.item.viewIndex;
 				
 				var connection = sqlTableWindow2.joinTable(sqlTableWindow1.shadowSprite, sqlTableWindow2.shadowSprite, "#000", [index1, index2]);
-				  
-				/*
-				sqlTable1.connectionUUIDs.push(connection.uuid);
-				sqlTable2.connectionUUIDs.push(connection.uuid);
-								
+				  				
+				//sqlTableWindow1.connectionUUIDs.push(connection.uuid);
+				//sqlTableWindow2.connectionUUIDs.push(connection.uuid);
+					
+				controller.addConnection(connection); // nu stiu daca e ok aici
+				
 				//connection.bgLine.el.on('contextmenu', showJoinCM, connection);
 				//connection.line.el.on('contextmenu', showJoinCM, connection);
 		    
 				// se creaza o legaura (join) intre tabele:	
+				var join = Ext.create('Ext.letyournailsgrow.sqlquerybuilder.model.SQLJoinModel');
 				var joinCondition = '';		
 				if (dropTable.get('tableAlias') != '') {
 					joinCondition = joinCondition + dropTable.get('tableAlias') + '.' + join.get('leftTableField') + '=';
@@ -99,15 +101,17 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 					joinCondition = joinCondition + targetTable.get('tableName') + '.' + join.get('rightTableField');
 				}
 				
-				var join = Ext.create('Ext.letyournailsgrow.sqlquerybuilder.model.SQLJoinModel');			
 				join.set('id', connection.uuid);			
-				join.set('leftTableId', sqlTable1.tableId);			
+				join.set('leftTableId', sqlTableWindow1.tableId);			
 				join.set('leftTableField', data.records[0].get('field'));			
-				join.set('rightTableId', sqlTable2.tableId);			
-				join.set('rightTableField', sqlTable2.down('grid').store.getAt(node.viewIndex).get('field'));			
+				join.set('rightTableId', sqlTableWindow2.tableId);			
+				join.set('rightTableField', sqlTableWindow2.down('grid').store.getAt(node.viewIndex).get('field'));			
 				join.set('joinType', 'INNER');					                    
 				join.set('joinCondition', joinCondition);
-				*/
+				
+				controller.addJoin(join);
+				
+
 			}
 		},
 		

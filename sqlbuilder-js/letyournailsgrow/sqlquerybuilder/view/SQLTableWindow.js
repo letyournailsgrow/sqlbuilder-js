@@ -191,13 +191,12 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
             // se trimite spiridusului cat s-a mutat (distanta) 
             this.shadowSprite.onDrag(this.getOffset());
           
-		/*
-            if (this.shadowSprite.bConnections) {
-                // also move the associated connections 
-                for (var i = ux.vqbuilder.connections.length; i--;) {
-                    this.connection(ux.vqbuilder.connections[i]);
+	    if (this.shadowSprite.hasJoins) {
+		var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
+                for (var i = controller.getConnections().length; i--;) {
+                    this.updateJoinTable(controller.getConnections()[i]);
                 }
-            }*/
+            }
         }
     },
     
@@ -294,37 +293,38 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
         
     },
     
-    
     getJoinTablePaths:function(sprite1, sprite2, indexes){
 	var positions = this.getLeftRightCoordinates(sprite1, sprite2, indexes);
-	var line1, line2;
-	if (positions.leftBoxConnectionPoint.x - positions.rightBoxConnectionPoint.x < 0) {
-	    line1 = 12;
-	    line2 = 12;
-	} else {
-	    line1 = -12;
-	    line2 = -12;
-	}  
+	var lineLength = 12;  
+	var sign = 1;	    
+	if (positions.leftBoxConnectionPoint.x - positions.rightBoxConnectionPoint.x >= 0) {
+	    sign = -1;
+	} 
 	// M = move to (x,y)+
 	// H = horizontal line to x+
 	// L = line to (x,y)+
+	// -1 daca este liniuta albastra in interiorul SPIRIDUSULUI
+	var orientation = ((sprite1.getBBox().x==positions.leftBoxConnectionPoint.x+1 && sign==1) || (sprite2.getBBox().x==positions.rightBoxConnectionPoint.x+1) && sign==-1)?-1:1; //daca nu merge ok, ar trebuie sa fie orientation=1
+	var line1 = (sign)*lineLength;
+	var line2 = (sign)*lineLength;
 	var path = ["M", positions.leftBoxConnectionPoint.x, positions.leftBoxConnectionPoint.y, 
-			 "H", positions.leftBoxConnectionPoint.x + line1, 
-			 "L", positions.rightBoxConnectionPoint.x - line2, positions.rightBoxConnectionPoint.y,
+			 "H", positions.leftBoxConnectionPoint.x + (orientation) * line1, 
+			 "L", positions.rightBoxConnectionPoint.x - (orientation) * line2, positions.rightBoxConnectionPoint.y,
 			 "H", positions.rightBoxConnectionPoint.x
 			].join(",");
 
 	var miniLine1 = ["M", positions.leftBoxConnectionPoint.x, positions.leftBoxConnectionPoint.y,
-			       "H", positions.leftBoxConnectionPoint.x + line1
+			       "H", positions.leftBoxConnectionPoint.x + (orientation) * line1
 			      ].join(",");
 
-	var miniLine2 = ["M", positions.rightBoxConnectionPoint.x - line2, positions.rightBoxConnectionPoint.y, 
+	var miniLine2 = ["M", positions.rightBoxConnectionPoint.x - (orientation) * line2, positions.rightBoxConnectionPoint.y, 
 			       "H", positions.rightBoxConnectionPoint.x
 			      ].join(",");
 	
 	return [path,miniLine1,miniLine2];
 	
     },
+
     
     updateJoinTable:function(joinTable){
 	var sprite1 = joinTable.from; 
@@ -367,17 +367,19 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 miniLine1: Ext.create('Ext.draw.Sprite', {
                     type: 'path',
                     path: joinTablePath[1],
-                    stroke: color,
+                  //  stroke: color,
+		    stroke:'blue',	
                     fill: 'none',
-                    'stroke-width': 2,
+                    'stroke-width': 7,
                     surface: surface
                 }).show(true),
                 miniLine2: Ext.create('Ext.draw.Sprite', {
                     type: 'path',
                     path: joinTablePath[2],
-                    stroke: color,
+                    //stroke: color,
+		    stroke:'blue',	
                     fill: 'none',
-                    'stroke-width': 2,
+                    'stroke-width': 7,
                     surface: surface
                 }).show(true),
                 bgLine: Ext.create('Ext.draw.Sprite', {
@@ -394,6 +396,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 indexes: indexes,
                 uuid: this.createUUID()
 	};
+
     }
    
 });
