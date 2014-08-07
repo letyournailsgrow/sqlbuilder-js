@@ -272,20 +272,19 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
 	    
 	// se unesc cele mai apropiate puncte, dar numari in cruce, 
 	// PARE DUBIOS , se testeaza doar (0,3) si (1,2) pe x, nu si (0.2) si (1,3)   
-        var leftBoxConnectionPoint;
-        var rightBoxConnectionPoint;       
+        var leftBoxConnectionPoint=null;
+        var rightBoxConnectionPoint=null;       
         for (var i = 0; i < 2; i++) {
             for (var j = 2; j < 4; j++) {
 	       var dx = Math.abs(points[i].x - points[j].x);
 	     //  var dy = Math.abs(points[i].y - points[j].y);
-                if ( ((i == 0 && j == 3) && dx < Math.abs(points[1].x - points[2].x))  || 
-		     ((i == 1 && j == 2) && dx < Math.abs(points[0].x - points[3].x))) {
+                if ( ((i == 0 && j == 3) && dx <= Math.abs(points[1].x - points[2].x))  || 
+		     ((i == 1 && j == 2) && dx <= Math.abs(points[0].x - points[3].x))) {
                     leftBoxConnectionPoint = points[i];
                     rightBoxConnectionPoint = points[j];
                 }
             }
         };
-        
         return {
             leftBoxConnectionPoint: leftBoxConnectionPoint,
             rightBoxConnectionPoint: rightBoxConnectionPoint
