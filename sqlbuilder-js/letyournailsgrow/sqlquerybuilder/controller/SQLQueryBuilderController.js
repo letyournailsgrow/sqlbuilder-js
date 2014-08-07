@@ -72,7 +72,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
     },
     
     addConnection:function(connection){
-	this.connections.push();
+	this.connections.push(connection);
     },
     
     getConnections:function(){
