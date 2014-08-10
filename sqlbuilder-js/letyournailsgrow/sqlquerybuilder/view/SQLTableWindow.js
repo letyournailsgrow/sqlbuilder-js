@@ -24,14 +24,36 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
     },
       
      closeSQLTable: function(){
-     
+     	
+	// remove fields / columns from sqlFieldsStore
+        //ux.vqbuilder.sqlSelect.removeFieldsByTableId(this.tableId);
+        
+        // remove table from sqlTables store inside ux.vqbuilder.sqlSelect
+        //ux.vqbuilder.sqlSelect.removeTableById(this.tableId);
+	     
         // SPIRIDUS: unregister 
         this.getHeader().el.un('mousedown', this.startDragSprite, this);
         // SPIRIDUS: unregister
         Ext.EventManager.un(document, 'mousemove', this.moveWindow, this);
         // SPIRIDUS: remove sprite from surface
-        Ext.getCmp('SQLTableZonePanel').down('draw').surface.remove(this.shadowSprite, false);
-	     
+        Ext.getCmp('SQLTableZonePanel').down('draw').surface.remove(this.shadowSprite, false);		
+	    
+	/*
+	ux.vqbuilder.connections = Ext.Array.filter(ux.vqbuilder.connections, function(connection){
+            var bRemove = true;
+            for (var j = 0, l = this.connectionUUIDs.length; j < l; j++) {
+                if (connection.uuid == this.connectionUUIDs[j]) {
+                    connection.line.remove();
+                    connection.bgLine.remove();
+                    connection.miniLine1.remove();
+                    connection.miniLine2.remove();
+                    bRemove = false;
+                }
+            }
+            return bRemove;
+        }, this);	    
+         */	
+	 
     },
     
      initComponent: function(){
@@ -159,11 +181,12 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
 		x:resizer.target.x,
 		y:resizer.target.y   
             }, true);
-	  
-            // also move the associated connections 
-           // for (var i = ux.vqbuilder.connections.length; i--;) {
-               // this.connection(ux.vqbuilder.connections[i]);
-           // }
+	              
+	    var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
+	    
+	    for (var i = controller.getConnections().length; i--;) {
+                    this.updateJoinTable(controller.getConnections()[i]);
+	    }
         }, this);
 	
         // SPIRIDUS: cand se face click cu ajutorul mouse-ului pe header-ul ferestrei se poate considera ca se poate trage si spiridusul
@@ -396,6 +419,148 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 uuid: this.createUUID()
 	};
 
+    },
+    
+    /*
+    showSQLTableCM: function(event, el){
+        var cm;
+        // stop the browsers event bubbling
+        event.stopEvent();
+        // create context menu
+        cm = Ext.create('Ext.menu.Menu', {
+            items: [{
+                text: 'Add/Edit Alias',
+                icon: 'resources/images/document_edit16x16.gif',
+                handler: Ext.Function.bind(function(){
+                    this.showTableAliasEditForm();
+                }, this)
+            }, {
+                text: 'Remove Table',
+                icon: 'resources/images/delete.gif',
+                handler: Ext.Function.bind(function(){
+                    // remove the sqltable
+                    this.close();
+                }, this)
+            }, {
+                text: 'Close Menu',
+                icon: 'resources/images/cross.gif',
+                handler: Ext.emptyFn
+            }]
+        });
+        // show the contextmenu next to current mouse position
+        cm.showAt(event.getXY());
+    },
+    showTableAliasEditForm: function(event, el){
+        var table, header, title, titleId;
+        table = ux.vqbuilder.sqlSelect.getTableById(this.tableId);
+        header = this.getHeader();
+        titleId = '#' + header.getId() + '_hd';
+        title = this.down(titleId);
+        header.remove(title);
+        header.insert(0, [{
+            xtype: 'textfield',
+            flex: 0.95,
+            parentCmp: header,
+            parentTableModel: table,
+            initComponent: function(){
+            
+                this.setValue(this.parentTableModel.get('tableAlias'));
+                
+                this.on('render', function(field, event){
+                    // set focus to the textfield Benutzerkennung
+                    field.focus(true, 200);
+                }, this);
+                
+                this.on('specialkey', function(field, event){
+                    if (event.getKey() == event.ENTER) {
+                        if (field.getValue() != this.parentCmp.origValue) {
+                            this.parentTableModel.set('tableAlias', field.getValue());
+                            this.parentCmp.origValue = field.getValue();
+                        }
+                        this.removeTextField();
+                        this.addTitle();
+                    }
+                }, this);
+                
+                this.on('blur', function(field, event){
+                    if (field.getValue() != this.parentCmp.origValue) {
+                        this.parentTableModel.set('tableAlias', field.getValue());
+                        this.parentCmp.origValue = field.getValue();
+                    }
+                    this.removeTextField();
+                    this.addTitle();
+                }, this);
+                
+                this.callParent(arguments);
+            },
+            removeTextField: function(){
+                var next;
+                next = this.next();
+                this.parentCmp.remove(next);
+                this.parentCmp.remove(this);
+            },
+            addTitle: function(){
+                var titleText;
+                if (this.parentTableModel.get('tableAlias') != '') {
+                    titleText = this.parentTableModel.get('tableAlias') + ' ( ' + this.parentTableModel.get('tableName') + ' )';
+                }
+                else {
+                    titleText = this.parentTableModel.get('tableName');
+                }
+                this.parentCmp.insert(0, {
+                    xtype: 'component',
+                    ariaRole: 'heading',
+                    focusable: false,
+                    noWrap: true,
+                    flex: 1,
+                    id: this.parentCmp.id + '_hd',
+                    style: 'text-align:' + this.parentCmp.titleAlign,
+                    cls: this.parentCmp.baseCls + '-text-container',
+                    renderTpl: this.parentCmp.getTpl('headingTpl'),
+                    renderData: {
+                        title: titleText,
+                        cls: this.parentCmp.baseCls,
+                        ui: this.parentCmp.ui
+                    },
+                    childEls: ['textEl']
+                });
+            }
+        }, {
+            xtype: 'component',
+            flex: 0.05
+        }]);
+    },
+    
+    beforeShow: function(){
+        var aWin, prev, o;
+        // cascading window positions
+        if (this.cascadeOnFirstShow) {
+            o = (typeof this.cascadeOnFirstShow == 'number') ? this.cascadeOnFirstShow : 20;
+            // get all instances from xtype sqltable
+            aWin = Ext.ComponentQuery.query('sqltable');
+            // start position if there is only one table
+            if (aWin.length == 1) {
+                this.x = o;
+                this.y = o;
+            }
+            else {
+                // loop through all instances from xtype sqltable
+                for (var i = 0, l = aWin.length; i < l; i++) {
+                    if (aWin[i] == this) {
+                        if (prev) {
+                            this.x = prev.x + o;
+                            this.y = prev.y + o;
+                        }
+                    }
+                    if (aWin[i].isVisible()) {
+                        prev = aWin[i];
+                    }
+                }
+            }
+            this.setPosition(this.x, this.y);
+        }
     }
+    
+    */
    
 });

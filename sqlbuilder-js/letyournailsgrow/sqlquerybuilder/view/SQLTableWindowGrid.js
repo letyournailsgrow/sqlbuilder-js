@@ -60,7 +60,43 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
                 },
 		
 		drop: function(node, data, dropRec, dropPosition){			     			   
-			
+			   /*
+			   showJoinCM = function(event, el){				    				    
+				    event.stopEvent();				    
+				    var cm = Ext.create('Ext.menu.Menu', {
+					items: [{
+					    text: 'Edit Join',
+					    icon: 'resources/images/document_edit16x16.gif',
+					    handler: Ext.Function.bind(function(){
+					    
+					    }, this)
+					}, {
+					    text: 'Remove Join',
+					    icon: 'resources/images/remove.gif',
+					    handler: Ext.Function.bind(function(){					
+						ux.vqbuilder.connections = Ext.Array.filter(ux.vqbuilder.connections, function(connection){
+						    var bRemove = true;
+						    if (this.uuid == connection.uuid) {
+							this.line.remove();
+							this.bgLine.remove();
+							this.miniLine1.remove();
+							this.miniLine2.remove();
+							bRemove = false;
+						    }
+						    return bRemove;
+						}, this);
+						ux.vqbuilder.sqlSelect.removeJoinById(this.uuid);
+					    }, this)
+					}, {
+					    text: 'Close Menu',
+					    icon: 'resources/images/cross.gif',
+					    handler: Ext.emptyFn
+					}]
+				    });                    
+				    cm.showAt(event.getXY());
+			  };
+			  */
+		
 			  if (node.boundView) {
 				 
 				var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
@@ -120,12 +156,12 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 			var scrollOffset = this.el.getScroll();
 			var sqlTable = this.up('sqltablewindow');
 			sqlTable.shadowSprite.scrollTop = scrollOffset.top;
-			
-			/*
-			// redraw all connections to reflect scroll action
-			for (var i = ux.vqbuilder.connections.length; i--;) {
-			    sqlTable.connection(ux.vqbuilder.connections[i]);
-			}*/
+						
+			var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
+			for (var i = controller.getConnections().length; i--;) {
+				sqlTable.updateJoinTable(controller.getConnections()[i]);
+			}
+						
 		}
             
 	}
@@ -161,10 +197,10 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
             checkOnly: true,
             listeners: {
                 select: function(selModel, data){
-			
+			//   ux.vqbuilder.sqlSelect.addFieldRecord(data, true);
                 },
                 deselect: function(selModel, data){
-                   
+			// ux.vqbuilder.sqlSelect.removeFieldById(data.get('id'));
 		}
             }
         });

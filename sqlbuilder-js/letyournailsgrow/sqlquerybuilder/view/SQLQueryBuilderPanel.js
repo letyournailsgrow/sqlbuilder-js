@@ -80,7 +80,10 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderPanel', {
 	},
      ],
 	
-     initComponent: function(){		
+     initComponent: function(){	
+	// SyntaxHighlighter.defaults['gutter'] = false;
+        // SyntaxHighlighter.defaults['toolbar'] = false;
+	     
 	this.sqlQueryBuilderController = Ext.create("Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderController");	 
         this.callParent(arguments);
     },

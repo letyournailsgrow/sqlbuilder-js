@@ -4,7 +4,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLQueryBuilderResultPanel
     id: 'SQLResultPanel',
     listeners: {
         afterlayout: function(){
-           
+            //SyntaxHighlighter.highlight(); 
         }
     },
     initComponent: function(){
