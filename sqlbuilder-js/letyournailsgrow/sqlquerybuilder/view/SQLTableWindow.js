@@ -24,12 +24,10 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
     },
       
      closeSQLTable: function(){
-     	
-	// remove fields / columns from sqlFieldsStore
-        //ux.vqbuilder.sqlSelect.removeFieldsByTableId(this.tableId);
-        
-        // remove table from sqlTables store inside ux.vqbuilder.sqlSelect
-        //ux.vqbuilder.sqlSelect.removeTableById(this.tableId);
+     		
+	var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
+        controller.removeFieldsByTableId(this.tableId);	
+        controller.removeTableById(this.tableId);
 	     
         // SPIRIDUS: unregister 
         this.getHeader().el.un('mousedown', this.startDragSprite, this);
@@ -37,22 +35,21 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
         Ext.EventManager.un(document, 'mousemove', this.moveWindow, this);
         // SPIRIDUS: remove sprite from surface
         Ext.getCmp('SQLTableZonePanel').down('draw').surface.remove(this.shadowSprite, false);		
-	    
-	/*
-	ux.vqbuilder.connections = Ext.Array.filter(ux.vqbuilder.connections, function(connection){
-            var bRemove = true;
+	    	
+	var connections = Ext.Array.filter(controller.getConnections(), function(connection){
+            var isRemove = false;
             for (var j = 0, l = this.connectionUUIDs.length; j < l; j++) {
                 if (connection.uuid == this.connectionUUIDs[j]) {
                     connection.line.remove();
                     connection.bgLine.remove();
                     connection.miniLine1.remove();
                     connection.miniLine2.remove();
-                    bRemove = false;
+                    isRemove = false;
                 }
             }
-            return bRemove;
+            return !isRemove;
         }, this);	    
-         */	
+	controller.setConnections(connections);
 	 
     },
     
@@ -192,13 +189,11 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
 	
         // SPIRIDUS: cand se face click cu ajutorul mouse-ului pe header-ul ferestrei se poate considera ca se poate trage si spiridusul
         this.getHeader().el.on('mousedown', this.startDragSprite, this);
-	
-        /*
+	        
         this.getHeader().el.on('contextmenu', this.showSQLTableCM, this);
         this.getHeader().el.on('dblclick', this.showTableAliasEditForm, this);
         this.getHeader().origValue = '';
-        */
-       
+               
 	// SPIRIDUS: util pentru a muta spiridusul
 	Ext.EventManager.on(document, 'mousemove', this.moveWindow, this);
         
@@ -421,14 +416,10 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
 	};
 
     },
-    
-    /*
-    showSQLTableCM: function(event, el){
-        var cm;
-        // stop the browsers event bubbling
-        event.stopEvent();
-        // create context menu
-        cm = Ext.create('Ext.menu.Menu', {
+        
+    showSQLTableCM: function(event, el){        
+        event.stopEvent();        
+        var cm = Ext.create('Ext.menu.Menu', {
             items: [{
                 text: 'Add/Edit Alias',
                 icon: 'resources/images/document_edit16x16.gif',
@@ -438,8 +429,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
             }, {
                 text: 'Remove Table',
                 icon: 'resources/images/delete.gif',
-                handler: Ext.Function.bind(function(){
-                    // remove the sqltable
+                handler: Ext.Function.bind(function(){                    
                     this.close();
                 }, this)
             }, {
@@ -447,16 +437,17 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 icon: 'resources/images/cross.gif',
                 handler: Ext.emptyFn
             }]
-        });
-        // show the contextmenu next to current mouse position
+        });        
         cm.showAt(event.getXY());
     },
+    
     showTableAliasEditForm: function(event, el){
-        var table, header, title, titleId;
-        table = ux.vqbuilder.sqlSelect.getTableById(this.tableId);
-        header = this.getHeader();
-        titleId = '#' + header.getId() + '_hd';
-        title = this.down(titleId);
+	var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();
+	        
+        var table = controller.getTableById(this.tableId);
+        var header = this.getHeader();
+        var titleId = '#' + header.getId() + '_hd';
+        var title = this.down(titleId);
         header.remove(title);
         header.insert(0, [{
             xtype: 'textfield',
@@ -467,26 +458,25 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
             
                 this.setValue(this.parentTableModel.get('tableAlias'));
                 
-                this.on('render', function(field, event){
-                    // set focus to the textfield Benutzerkennung
+                this.on('render', function(field, event){                   
                     field.focus(true, 200);
                 }, this);
                 
                 this.on('specialkey', function(field, event){
                     if (event.getKey() == event.ENTER) {
                         if (field.getValue() != this.parentCmp.origValue) {
-                            this.parentTableModel.set('tableAlias', field.getValue());
-                            this.parentCmp.origValue = field.getValue();
-                        }
-                        this.removeTextField();
-                        this.addTitle();
+			//	this.parentTableModel.set('tableAlias', field.getValue());
+			//	this.parentCmp.origValue = field.getValue();
+			}
+			this.removeTextField();
+			this.addTitle();
                     }
                 }, this);
                 
                 this.on('blur', function(field, event){
-                    if (field.getValue() != this.parentCmp.origValue) {
-                        this.parentTableModel.set('tableAlias', field.getValue());
-                        this.parentCmp.origValue = field.getValue();
+		    if (field.getValue() != this.parentCmp.origValue) {
+                        //this.parentTableModel.set('tableAlias', field.getValue());
+                        //this.parentCmp.origValue = field.getValue();
                     }
                     this.removeTextField();
                     this.addTitle();
@@ -494,12 +484,13 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
                 
                 this.callParent(arguments);
             },
-            removeTextField: function(){
-                var next;
-                next = this.next();
+	    
+            removeTextField: function(){                
+                var next = this.next();
                 this.parentCmp.remove(next);
                 this.parentCmp.remove(this);
             },
+	    	    
             addTitle: function(){
                 var titleText;
                 if (this.parentTableModel.get('tableAlias') != '') {
@@ -530,9 +521,11 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
             xtype: 'component',
             flex: 0.05
         }]);
+	
     },
     
     beforeShow: function(){
+	    /*
         var aWin, prev, o;
         // cascading window positions
         if (this.cascadeOnFirstShow) {
@@ -560,8 +553,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
             }
             this.setPosition(this.x, this.y);
         }
+	*/
     }
-    
-    */
-   
+           
 });

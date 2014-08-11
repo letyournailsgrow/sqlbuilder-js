@@ -67,6 +67,11 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
         return this.tableStore.getById(tableID);
     },
     
+    removeTableById: function(tableID){        
+        var table = this.tableStore.getById(tableID);
+        this.tableStore.remove(table);
+    },
+    
     addJoin: function(join){
 	this.joinStore.add(join) ;
     },
@@ -112,5 +117,15 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
     },
     addField: function(projectionAndSelection){
         this.projectionAndSelectionStore.add(projectionAndSelection);
-    }   
+    },
+    removeFieldsByTableId: function(tableId){
+        var records = [];
+        this.projectionAndSelectionStore.each(function(model){
+            if (model.get('tableId') == tableId) {
+                records.push(model);
+            }
+        });
+        this.projectionAndSelectionStore.remove(records);
+    }
+    
 });
