@@ -78,4 +78,39 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.controller.SQLQueryBuilderContr
     getConnections:function(){
 	return this.connections;
     },
+    
+    setConnections:function(connections){
+	this.connections = connections;
+    },
+    
+    removeJoinById: function(joinID){        
+        var join = this.joinStore.getById(joinID);
+        this.joinStore.remove(join);
+    },
+    
+    removeFieldById: function(id){        
+        var projectionAndSelection = this.projectionAndSelectionStore.getById(id);
+        this.projectionAndSelectionStore.remove(projectionAndSelection);
+    },
+    
+    addFieldRecord: function(record, bOutput){	 
+        var tableAlias = this.getTableById(record.get('tableId')).get('tableAlias');        
+	var expression = record.get('tableName') + '.' + record.get('field');
+        if (tableAlias != '') {            
+            expression = tableAlias + '.' + record.get('field');
+        }
+        
+        var model = Ext.create('Ext.letyournailsgrow.sqlquerybuilder.model.SQLProjectionAndSelectionModel');        
+        model.set('expression', expression);        
+        model.set('output', bOutput);
+        model.set('id', record.get('id'));        
+        model.set('field', record.get('field'));        
+        model.set('tableId', record.get('tableId'));        
+        model.set('extCmpId', record.get('extCmpId'));
+	
+        this.addField(model);
+    },
+    addField: function(projectionAndSelection){
+        this.projectionAndSelectionStore.add(projectionAndSelection);
+    }   
 });

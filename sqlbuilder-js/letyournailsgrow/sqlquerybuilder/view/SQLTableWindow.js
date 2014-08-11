@@ -59,6 +59,7 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindow', {
      initComponent: function(){
         
 	var me = this;
+	this.connectionUUIDs = [];
 	this.isMouseDown = false; // util pentru spiridus
 	     
         // UUID

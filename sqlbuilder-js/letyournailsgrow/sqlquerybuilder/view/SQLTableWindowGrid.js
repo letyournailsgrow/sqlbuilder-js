@@ -60,42 +60,51 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
                 },
 		
 		drop: function(node, data, dropRec, dropPosition){			     			   
-			   /*
-			   showJoinCM = function(event, el){				    				    
+			   
+			  var showJoinContextMenu = function(event, el){				    				    
 				    event.stopEvent();				    
 				    var cm = Ext.create('Ext.menu.Menu', {
-					items: [{
-					    text: 'Edit Join',
-					    icon: 'resources/images/document_edit16x16.gif',
-					    handler: Ext.Function.bind(function(){
-					    
-					    }, this)
-					}, {
-					    text: 'Remove Join',
-					    icon: 'resources/images/remove.gif',
-					    handler: Ext.Function.bind(function(){					
-						ux.vqbuilder.connections = Ext.Array.filter(ux.vqbuilder.connections, function(connection){
-						    var bRemove = true;
-						    if (this.uuid == connection.uuid) {
-							this.line.remove();
-							this.bgLine.remove();
-							this.miniLine1.remove();
-							this.miniLine2.remove();
-							bRemove = false;
-						    }
-						    return bRemove;
-						}, this);
-						ux.vqbuilder.sqlSelect.removeJoinById(this.uuid);
-					    }, this)
-					}, {
-					    text: 'Close Menu',
-					    icon: 'resources/images/cross.gif',
-					    handler: Ext.emptyFn
-					}]
+					items: [
+					    // nu are rost
+					    /*{
+						    text: 'Edit Join',
+						    icon: 'resources/images/document_edit16x16.gif',
+						    handler: Ext.Function.bind(function(){
+						    
+						    }, this)
+					    },*/
+					  {
+						    text: 'Remove Join',
+						    icon: 'resources/images/remove.gif',
+						    handler: Ext.Function.bind(function(){	
+							var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();							    
+							var connections = Ext.Array.filter(controller.getConnections(), function(connection){
+							    var isJoinRemove = false;
+							    if (this.uuid == connection.uuid) {
+								this.line.remove();
+								this.bgLine.remove();
+								this.miniLine1.remove();
+								this.miniLine2.remove();
+								isJoinRemove = true;
+							    }
+							    return !isJoinRemove;
+							}, this);
+							
+							controller.setConnections(connections);
+							controller.removeJoinById(this.uuid);
+						    }, this)
+					    } 
+						// nu are rost
+						/*,{
+						    text: 'Close Menu',
+						    icon: 'resources/images/cross.gif',
+						    handler: Ext.emptyFn
+						}*/
+					]
 				    });                    
 				    cm.showAt(event.getXY());
 			  };
-			  */
+			  
 		
 			  if (node.boundView) {
 				 
@@ -115,13 +124,13 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
 				
 				var connection = sqlTableWindow2.joinTable(sqlTableWindow1.shadowSprite, sqlTableWindow2.shadowSprite, "#000", [index1, index2]);
 				  				
-				//sqlTableWindow1.connectionUUIDs.push(connection.uuid);
-				//sqlTableWindow2.connectionUUIDs.push(connection.uuid);
+				sqlTableWindow1.connectionUUIDs.push(connection.uuid);
+				sqlTableWindow2.connectionUUIDs.push(connection.uuid);
 					
 				controller.addConnection(connection); // nu stiu daca e ok aici
 				
-				//connection.bgLine.el.on('contextmenu', showJoinCM, connection);
-				//connection.line.el.on('contextmenu', showJoinCM, connection);
+				connection.bgLine.el.on('contextmenu', showJoinContextMenu, connection);
+				connection.line.el.on('contextmenu', showJoinContextMenu, connection);
 		    
 				// se creaza o legaura (join) intre tabele:	
 				var join = Ext.create('Ext.letyournailsgrow.sqlquerybuilder.model.SQLJoinModel');
@@ -197,10 +206,12 @@ Ext.define('Ext.letyournailsgrow.sqlquerybuilder.view.SQLTableWindowGrid', {
             checkOnly: true,
             listeners: {
                 select: function(selModel, data){
-			//   ux.vqbuilder.sqlSelect.addFieldRecord(data, true);
+			var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();	
+			controller.addFieldRecord(data, true);
                 },
                 deselect: function(selModel, data){
-			// ux.vqbuilder.sqlSelect.removeFieldById(data.get('id'));
+			var controller = Ext.getCmp('SQLQueryBuilderPanel').getController();	
+			controller.removeFieldById(data.get('id'));						
 		}
             }
         });
